@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Socket.io Client</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    .alert {
+      color: white;
+      background-color: red;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .info {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Socket.io Client</h2>
+  <div id="notifications"></div>
+
+  <script>
+    const socket = io();
+    const notifications = document.getElementById('notifications');
+
+    socket.on('new-patient', (patient) => {
+      const patientDiv = document.createElement('div');
+
+      if (patient.triageLevel === 1) {
+        patientDiv.className = 'alert';
+        patientDiv.innerText = `🚨 Critical Patient Alert: ${patient.name} (Triage Level ${patient.triageLevel})`;
+      } else {
+        patientDiv.className = 'info';
+        patientDiv.innerText = `New Patient: ${patient.name} (Triage Level ${patient.triageLevel})`;
+      }
+
+      notifications.prepend(patientDiv);
+    });
+  </script>
+</body>
+</html>
